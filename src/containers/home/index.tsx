@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { getMoviesList } from '../../services/requests';
 
 export default function Home() {
-    return (
-        <div>
-            Home
-        </div>
-    )
+  useEffect(() => {
+    getMoviesList().then(res => console.log(res));
+  });
+  return <div>Home</div>;
 }
