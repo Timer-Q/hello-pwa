@@ -1,0 +1,11 @@
+.home {
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    .item {
+      width: 48%;
+      box-shadow: 0 0 5px #ddd;
+    }
+  }
+}
