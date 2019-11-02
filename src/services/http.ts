@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:8000/api';
+const baseURL = 'http://localhost:8000';
 
 function http(url: string, data?: string | object, params?: object) {
   return fetch(`${baseURL}${url}`, {
