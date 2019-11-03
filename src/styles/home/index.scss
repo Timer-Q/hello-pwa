@@ -1,11 +1,27 @@
 .home {
   .list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
     padding: 10px;
+    height: 100vh;
+    overflow: auto;
     .item {
-      width: 48%;
-      box-shadow: 0 0 5px #ddd;
+      box-shadow: 0 5px 10px #ddd;
+      padding-bottom: 5px;
+      transition: all 0.2s;
+      .item-image {
+        width: 100%;
+      }
+      .item-title {
+        margin: 0;
+        padding: 5px;
+        font-size: 14px;
+        color: #333;
+      }
+      &:active {
+        transform: scale(0.8);
+      }
     }
   }
 }

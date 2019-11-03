@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { getDetail } from '../../services/requests';
 
 export default function Detail() {
-    // const [detail, setDetail] = useState()
+  // const [detail, setDetail] = useState()
+  const location = useLocation();
+
+  const { id } = location.state;
   useEffect(() => {
-    getDetail().then(res => console.log(res))
+    if (id) {
+      getDetail(id).then(res => console.log(res));
+    }
   });
-  return <div>detail</div>
+  return <div>detail</div>;
 }
