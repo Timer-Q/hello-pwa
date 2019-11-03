@@ -6,7 +6,9 @@ import '../../styles/home/index.scss';
 export default function Home() {
   const [list, setList] = useState([]);
   const history = useHistory();
+  let intersectionObserver: IntersectionObserver;
 
+  // TODO: 替换成 useReducer / useCallback
   useEffect(() => {
     getList().then(res => {
       if (res && res.flag) {
@@ -14,10 +16,13 @@ export default function Home() {
         setObseerver();
       }
     });
+    return () => {
+      intersectionObserver.disconnect();
+    };
   }, []);
 
   function setObseerver() {
-    const observer = new IntersectionObserver(
+    intersectionObserver = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach(entry => {
           const { target } = entry;
@@ -36,7 +41,7 @@ export default function Home() {
     const ItemEls = document.querySelectorAll('.item-image');
     if (ItemEls) {
       ItemEls.forEach(el => {
-        observer.observe(el);
+        intersectionObserver.observe(el);
       });
     }
   }
