@@ -6,13 +6,38 @@ import '../../styles/home/index.scss';
 export default function Home() {
   const [list, setList] = useState([]);
   const history = useHistory();
-  let intersectionObserver: IntersectionObserver;
 
-  // TODO: 替换成 useReducer / useCallback
   useEffect(() => {
+    let intersectionObserver: IntersectionObserver;
     getList().then(res => {
       if (res && res.flag) {
         setList(res.data.animeDataEntityList);
+
+        const setObseerver = () => {
+          intersectionObserver = new IntersectionObserver(
+            (entries, observer) => {
+              entries.forEach(entry => {
+                const { target } = entry;
+                if (target) {
+                  if (entry.intersectionRatio) {
+                    (target as HTMLImageElement).src =
+                      (target as HTMLImageElement).dataset.src || '';
+                    observer.unobserve(target);
+                  }
+                }
+              });
+            },
+            {
+              root: document.querySelector('.list'),
+            }
+          );
+          const ItemEls = document.querySelectorAll('.item-image');
+          if (ItemEls) {
+            ItemEls.forEach(el => {
+              intersectionObserver.observe(el);
+            });
+          }
+        };
         setObseerver();
       }
     });
@@ -20,31 +45,6 @@ export default function Home() {
       intersectionObserver.disconnect();
     };
   }, []);
-
-  function setObseerver() {
-    intersectionObserver = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach(entry => {
-          const { target } = entry;
-          if (target) {
-            if (entry.intersectionRatio) {
-              (target as HTMLImageElement).src = (target as HTMLImageElement).dataset.src || '';
-              observer.unobserve(target);
-            }
-          }
-        });
-      },
-      {
-        root: document.querySelector('.list'),
-      }
-    );
-    const ItemEls = document.querySelectorAll('.item-image');
-    if (ItemEls) {
-      ItemEls.forEach(el => {
-        intersectionObserver.observe(el);
-      });
-    }
-  }
 
   function navigateToDetail(id: number) {
     history.push('/detail', {
