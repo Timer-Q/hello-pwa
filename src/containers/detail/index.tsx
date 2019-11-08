@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { getDetail } from '../../services/requests';
+import '../../styles/detail/index.scss';
 
 type Detail = {
-  title: string,
-  description: string
-}
+  title: string;
+  description: string;
+  img: string;
+  tag: string;
+};
 
 export default function Detail() {
   const [detail, setDetail] = useState({} as Detail);
@@ -20,13 +23,19 @@ export default function Detail() {
         }
       });
     }
-  }, []);
+  }, [location]);
 
   function renderContent() {
     return (
-      <div className='detail'>
-        <p className='title'>{detail.title}</p>
-        <p>简介: {detail.description}</p>
+      <div className='detail' style={{ backgroundImage: `url(${detail.img})` }}>
+        <div className='container'>
+          <div className='header-img' style={{ backgroundImage: `url(${detail.img})` }}></div>
+          <div className='content'>
+            <p className='title'>{detail.title}</p>
+            <p className='description'>简介: {detail.description}</p>
+            <p className='description'>{detail.tag}</p>
+          </div>
+        </div>
       </div>
     );
   }
