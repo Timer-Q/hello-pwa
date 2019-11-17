@@ -1,4 +1,4 @@
-const baseURL = 'http://192.168.0.106:8000';
+const baseURL = 'https://service-9cmks4hz-1256472744.ap-beijing.apigateway.myqcloud.com/release/fetchData';
 
 function http(url: string, data?: string | object, params?: object) {
   return fetch(`${baseURL}${url}`, {
