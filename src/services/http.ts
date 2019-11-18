@@ -1,4 +1,5 @@
-const baseURL = 'https://service-9cmks4hz-1256472744.ap-beijing.apigateway.myqcloud.com/release/fetchData';
+const baseURL = '';
+// const baseURL = 'http://service-ceagg0pb-1256472744.ap-beijing.apigateway.myqcloud.com/release/fetchDetail';
 
 function http(url: string, data?: string | object, params?: object) {
   return fetch(`${baseURL}${url}`, {
