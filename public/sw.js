@@ -12,8 +12,8 @@ self.addEventListener('install', function(event) {
         '/hello-pwa/',
         '/hello-pwa/public/',
         '/hello-pwa/index.html',
-        '/hello-pwa/logo192.css',
-        '/hello-pwa/logo512.js',
+        '/hello-pwa/logo192.png',
+        '/hello-pwa/logo512.png',
       ]);
     })
   );
@@ -26,6 +26,7 @@ self.addEventListener('fetch', function(event) {
       // caches.match() always resolves
       // but in case of success response will have value
       if (response !== undefined) {
+        console.log(response)
         return response;
       } else {
         return fetch(event.request)
