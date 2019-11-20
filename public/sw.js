@@ -9,11 +9,11 @@ self.addEventListener('install', function(event) {
     // 尽管它被定义在 service worker 的标准中,  但是它不必一定要配合 service worker 使用.
     caches.open('v1').then(function(cache) {
       return cache.addAll([
-        '/hello-pwa/',
-        '/hello-pwa/public/',
-        '/hello-pwa/index.html',
-        '/hello-pwa/logo192.png',
-        '/hello-pwa/logo512.png',
+        '/',
+        '/public/',
+        '/index.html',
+        '/logo192.png',
+        '/logo512.png',
       ]);
     })
   );
