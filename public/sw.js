@@ -10,10 +10,10 @@ self.addEventListener('install', function(event) {
     caches.open('v1').then(function(cache) {
       return cache.addAll([
         '/',
-        '/public/',
         '/index.html',
         '/logo192.png',
         '/logo512.png',
+        '/manifest.json',
       ]);
     })
   );
