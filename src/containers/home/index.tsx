@@ -4,72 +4,102 @@ import { getList } from '../../services/requests';
 import '../../styles/home/index.scss';
 
 export default function Home() {
-  const [list, setList] = useState([]);
+  const [weekList, setWeekList] = useState([]);
+  const [topList, setTopList] = useState([]);
   const history = useHistory();
+
+  const setData = (sourceData: { data: Array<object> }, callback: Function) => {
+    const { data } = sourceData;
+    if (data && data.length) {
+      callback(data);
+    }
+  };
+
+  useEffect(() => {
+    Promise.all([
+      getList({ limit: 5 }),
+      getList({ 'filter[status]': 'current', 'page[limit]': 5, sort: '-user_count' }),
+    ]).then(([week, top]) => {
+      setData(week, setWeekList);
+      setData(top, setTopList);
+    });
+  }, []);
 
   useEffect(() => {
     let intersectionObserver: IntersectionObserver;
-    getList().then(res => {
-      if (res && res.flag) {
-        setList(res.data.animeDataEntityList);
-
-        const setObseerver = () => {
-          intersectionObserver = new IntersectionObserver(
-            (entries, observer) => {
-              entries.forEach(entry => {
-                const { target } = entry;
-                if (target) {
-                  if (entry.intersectionRatio) {
-                    (target as HTMLImageElement).src =
-                      (target as HTMLImageElement).dataset.src || '';
-                    observer.unobserve(target);
-                  }
+    if (weekList.length && topList.length) {
+      // image lazyload
+      const setObseerver = () => {
+        intersectionObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach(entry => {
+              const { target } = entry;
+              if (target) {
+                if (entry.intersectionRatio) {
+                  (target as HTMLImageElement).src = (target as HTMLImageElement).dataset.src || '';
+                  observer.unobserve(target);
                 }
-              });
-            },
-            {
-              root: document.querySelector('.list'),
-            }
-          );
-          const ItemEls = document.querySelectorAll('.item-image');
-          if (ItemEls) {
-            ItemEls.forEach(el => {
-              intersectionObserver.observe(el);
+              }
             });
-          }
-        };
-        setObseerver();
-      }
-    });
+          },
+          {
+            root: document.querySelector('.home'),
+          },
+        );
+        const ItemEls = document.querySelectorAll('.item-image');
+        if (ItemEls && ItemEls.length) {
+          ItemEls.forEach(el => {
+            intersectionObserver.observe(el);
+          });
+        }
+      };
+      setObseerver();
+    }
     return () => {
-      intersectionObserver.disconnect();
+      if (intersectionObserver) {
+        intersectionObserver.disconnect();
+      }
     };
-  }, []);
+  }, [weekList, topList]);
 
-  function navigateToDetail(id: number) {
-    history.push('/detail', {
-      id,
+  function navigateToDetail(data: {[propName: string]: any}) {
+    history.push({
+      pathname: '/detail',
+      state: {
+        id: data.id,
+        coverImage: data.attributes.coverImage.tiny,
+      }
     });
   }
 
-  function renderList() {
+  function renderList(list: Array<object>) {
     return list.map((item: { [propName: string]: any }) => {
+      const { attributes } = item;
       return (
-        <div className='item' key={item.id} onClick={() => navigateToDetail(item.id)}>
+        <div className='item' key={item.id} onClick={() => navigateToDetail(item)}>
           <img
             className='item-image'
             src={require('../../assets/images/placeholder.jpg')}
-            data-src={item.img}
-            alt={item.title}
+            data-src={attributes.posterImage.medium}
+            alt={attributes.titles.en}
           />
-          <p className='item-title'>{item.title}</p>
+          <p className='item-title'>{attributes.titles.ja_jp || attributes.titles.en}</p>
         </div>
       );
     });
   }
   return (
     <div className='home'>
-      <div className='list'>{renderList()}</div>
+      {/* 本周 */}
+      <div className='section'>
+        <div className='title'>Trending This Week</div>
+        <div className='list'>{renderList(weekList)}</div>
+      </div>
+      {/* 热门 */}
+      <div className='section'>
+        <div className='title'>Top Airing Anime</div>
+        <div className='list'>{renderList(topList)}</div>
+      </div>
     </div>
   );
 }
