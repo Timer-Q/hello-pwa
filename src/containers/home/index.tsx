@@ -67,7 +67,9 @@ export default function Home() {
       pathname: '/detail',
       state: {
         id: data.id,
-        coverImage: data.attributes.coverImage.tiny,
+        coverImage: data.attributes.coverImage.original,
+        titles: data.attributes.titles,
+        synopsis: data.attributes.synopsis,
       }
     });
   }
