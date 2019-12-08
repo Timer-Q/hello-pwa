@@ -63,14 +63,18 @@ export default function Home() {
   }, [weekList, topList]);
 
   function navigateToDetail(data: {[propName: string]: any}) {
+    const query = {
+      id: data.id,
+      coverImage: data.attributes.coverImage.original,
+      title: data.attributes.titles.ja_jp,
+      synopsis: data.attributes.synopsis,
+    }
+
+    const qs = new URLSearchParams(query).toString();
+
     history.push({
       pathname: '/detail',
-      state: {
-        id: data.id,
-        coverImage: data.attributes.coverImage.original,
-        titles: data.attributes.titles,
-        synopsis: data.attributes.synopsis,
-      }
+      search: `${qs}`,
     });
   }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, MouseEvent } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { getDetail } from '../../services/requests';
 import '../../styles/detail/index.scss';
 
@@ -13,30 +13,26 @@ interface IEpisode {
 
 interface IEpisodes extends Array<IEpisode> {}
 
-interface ITitles {
-  ja_jp: string;
-  en_jp: string;
-  en: string;
-}
-
 export default function Detail() {
   const [episodes, setEpisodes] = useState([] as IEpisodes);
   const [coverImage, setCoverImage] = useState('');
-  const [titles, setTitles] = useState({} as ITitles);
+  const [title, setTitle] = useState('');
   const [synopsis, setSynopsis] = useState('');
   const location = useLocation();
 
   useEffect(() => {
-    const { id, coverImage, titles, synopsis } = location.state || {};
+    const query = new URLSearchParams(location.search);
+    const id = query.get('id');
+    
     if (id) {
       getDetail({ 'filter[mediaType]': 'Anime', 'filter[media_id]': id, sort: 'number' }).then(
         res => {
           const { data } = res;
           if (data && data.length) {
             setEpisodes(data);
-            setCoverImage(coverImage);
-            setTitles(titles);
-            setSynopsis(synopsis);
+            setCoverImage(query.get('coverImage') || '');
+            setTitle(query.get('title') || '');
+            setSynopsis(query.get('synopsis') || '');
           }
         },
       );
@@ -82,7 +78,7 @@ export default function Detail() {
       <div className='detail' style={{ backgroundImage: `url(${coverImage})` }}>
         <div className='container'>
           <div className='header'>
-            <div className='title'>{titles.ja_jp}</div>
+            <div className='title'>{title}</div>
             <div className='synopsis'>{synopsis}</div>
           </div>
           <div className='list'>{renderEpisodes()}</div>
