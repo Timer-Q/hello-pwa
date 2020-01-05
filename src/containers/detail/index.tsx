@@ -39,7 +39,7 @@ export default function Detail() {
     }
   }, [location]);
 
-  const handleEpisodesClick = (event: MouseEvent<HTMLElement>) => {
+  const handleEpisodesClick = (event: MouseEvent<HTMLElement>): void => {
     const el = event.target as HTMLImageElement;
     const nextEl = el.nextElementSibling as HTMLDivElement;
     if (nextEl) {

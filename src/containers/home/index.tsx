@@ -85,7 +85,8 @@ export default function Home() {
         <div className='item' key={item.id} onClick={() => navigateToDetail(item)}>
           <img
             className='item-image'
-            src={require('../../assets/images/placeholder.jpg')}
+            // src={require('../../assets/images/placeholder.jpg')}
+            src={attributes.posterImage.medium}
             data-src={attributes.posterImage.medium}
             alt={attributes.titles.en}
           />
