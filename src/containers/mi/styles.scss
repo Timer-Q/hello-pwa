@@ -1,0 +1,54 @@
+.container {
+	max-height: 100vh;
+  overflow: auto;
+  .floor {
+    margin-bottom: 2vw;
+    .floor-item {
+      display: inline-block;
+      .floor-item-image {
+        width: 100%;
+      }
+    }
+    &.declare_banner_new {
+      overflow: auto;
+      font-size: 0;
+      white-space: nowrap;
+      .floor-item {
+        height: 42vw;
+      }
+      .floor-item-image {
+        height: 100%;
+      }
+    }
+    &.kingkong_new {
+      padding: 0 2vw;
+      font-size: 0;
+      .floor-item {
+        width: 20%;
+        .floor-item-title {
+          font-size: 3.2vw;
+          margin: 2vw 0;
+          text-align: center;
+        }
+      }
+    }
+    &.new_user_guide {
+      display: flex;
+      width: 100vw;
+      .floor-item {
+        flex: 1;
+        &:first-child {
+          flex: 2;
+        }
+      }
+    }
+    &.product_hot_new,
+    &.crowd_funding_new,
+    &.leaderboard_new {
+      width: 100vw;
+      .floor-item {
+        width: 30%;
+      }
+    }
+  }
+}
